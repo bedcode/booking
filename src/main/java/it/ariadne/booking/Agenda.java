@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.joda.time.Period;
 
 public class Agenda {
 
@@ -49,5 +50,33 @@ public class Agenda {
 			}
 		}
 		return false;
+	}
+
+	public DateTime searchAvailability(Resource r, Period period) {
+		boolean condition = false;
+		DateTime start = new DateTime();
+		DateTime end = start.plus(period);
+		while (condition == false) {
+			condition = this.getAvailability(start, end, r);
+			start = start.plusHours(1);
+			end = end.plusHours(1);
+		}
+		if (condition) {
+			return start.minusHours(1);
+		}
+		return null;
+	}
+
+	public DateTime searchAvailability(DateTime start, DateTime end, Resource r, Period period) {
+		boolean condition = false;
+		while (condition == false && start.plus(period).isBefore(end)) {
+			condition = this.getAvailability(start, end, r);
+			start = start.plusHours(1);
+			end = end.plusHours(1);
+		}
+		if (condition) {
+			return start.minusHours(1);
+		}
+		return null;
 	}
 }
