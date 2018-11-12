@@ -79,4 +79,19 @@ public class Agenda {
 		}
 		return null;
 	}
+
+	public DateTime searchAvailabilityConstraint(DateTime start, DateTime end, String resourceName, int constraint) {
+		Period p = new Period(start, end);
+		DateTime dt;
+		for (Map.Entry<Resource, List<Booking>> map : this.agenda.entrySet()) {
+			Resource r = map.getKey();
+			if (r.getClass().getSimpleName().equals(resourceName) && r.getConstraint() >= constraint) {
+				dt = this.searchAvailability(r, p);
+				if (dt != null) {
+					return dt;
+				}
+			}
+		}
+		return null;
+	}
 }

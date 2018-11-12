@@ -77,4 +77,30 @@ public class AskBookingTest {
 		availability = agenda.searchAvailability(start, end, car, period);
 		assertEquals("La prima data disponibile è", null, availability);
 	}
+
+	@Test
+	public void searchAvailabilityConstraint() {
+		Agenda agenda = new Agenda();
+		Resource car = new Car(4);
+		agenda.addResource(car);
+		DateTime start = new DateTime(2018, 11, 12, 14, 00);
+		DateTime end = new DateTime(2018, 11, 12, 17, 00);
+		String resourceName = "Car";
+		int constraint = 5;
+		DateTime availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
+		assertEquals("La risorsa è disponibile", null, availability);
+		constraint = 4;
+		DateTime now = new DateTime();
+		availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
+		assertEquals("La risorsa è disponibile", now.getHourOfDay(), availability.getHourOfDay());
+		
+		end = now.plusHours(3);
+		agenda.addBooking(now, end, car, "1");
+		availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
+		assertEquals("La risorsa è disponibile", now.getHourOfDay() + 3, availability.getHourOfDay());
+		
+		resourceName = "Aula";
+		availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
+		assertEquals("La risorsa è disponibile", null, availability);
+	}
 }

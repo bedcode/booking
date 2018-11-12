@@ -2,5 +2,5 @@ package it.ariadne.booking;
 
 public interface Resource {
 
-	int getLimit();
+	int getConstraint();
 }
