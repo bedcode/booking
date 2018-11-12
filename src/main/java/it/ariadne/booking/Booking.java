@@ -6,7 +6,7 @@ public class Booking {
 
 	private String id = "";
 	private Interval interval;
-	
+
 	public Booking(String id, Interval interval) {
 		this.id = id;
 		this.interval = interval;
@@ -14,10 +14,6 @@ public class Booking {
 
 	public Interval getInterval() {
 		return interval;
-	}
-
-	public void setInterval(Interval interval) {
-		this.interval = interval;
 	}
 
 	public String getId() {
