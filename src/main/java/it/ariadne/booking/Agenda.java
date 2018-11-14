@@ -9,6 +9,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 
+import it.ariadne.booking.users.User;
+
 public class Agenda {
 
 	private Map<Resource, List<Booking>> agenda = new HashMap<>();
@@ -29,10 +31,10 @@ public class Agenda {
 		return true;
 	}
 
-	public boolean addBooking(DateTime start, DateTime end, Resource r, String id) {
+	public boolean addBooking(DateTime start, DateTime end, Resource r, String id, User user) {
 		if (this.getAvailability(start, end, r)) {
 			Interval interval = new Interval(start, end);
-			Booking booking = new Booking(id, interval);
+			Booking booking = new Booking(id, interval, user);
 			List<Booking> bookings = this.agenda.get(r);
 			bookings.add(booking);
 			return true;
