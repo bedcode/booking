@@ -96,52 +96,78 @@ public class AskBookingTest {
 		DateTime now = new DateTime();
 		availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
 		assertEquals("La risorsa è disponibile", now.getHourOfDay(), availability.getHourOfDay());
-		
+
 		end = now.plusHours(3);
 		agenda.addBooking(now, end, car, "1", null);
 		availability = agenda.searchAvailabilityConstraint(now, end, resourceName, constraint);
 		assertEquals("La risorsa è disponibile", now.getHourOfDay() + 3, availability.getHourOfDay());
-		
+
 		resourceName = "Aula";
 		availability = agenda.searchAvailabilityConstraint(start, end, resourceName, constraint);
 		assertEquals("La risorsa è disponibile", null, availability);
 	}
-	
+
 	@Test
-	public void users () {
-		//AbstractUser admin = new Admin("John", "Doe", "john.doe@gmail.com", "1234");
+	public void users() {
 		Agenda agenda = new Agenda();
 		Resource car = new Car(4);
 		agenda.addResource(car);
 		DateTime start = new DateTime(2018, 11, 12, 14, 00);
 		DateTime end = new DateTime(2018, 11, 12, 17, 00);
 		User user = new User("Mario", "Rossi", "mario.rossi@gmail.com", "1234");
-		
+
 		boolean success = user.getAvailability(agenda, start, end, car);
 		assertEquals("La risorsa è disponibile", true, success);
-		
+
 		success = user.addBooking(agenda, start, end, car, "1");
 		assertEquals("La risorsa è prenotata", true, success);
-		
+
 		success = user.deleteBooking(agenda, car, "1");
 		assertEquals("La risorsa è cancellata", true, success);
-		
+
 		DateTime now = new DateTime();
 		end = now.plusHours(3);
 		Period period = new Period(now, end);
 		DateTime availability = user.searchAvailability(agenda, car, period);
 		assertEquals("La prima data disponibile è", now.getHourOfDay(), availability.getHourOfDay());
-		
+
 		end = now.plusHours(1);
 		period = new Period(now, end);
 		start = now;
 		end = now.plusHours(2);
 		availability = user.searchAvailability(agenda, now, end, car, period);
 		assertEquals("La prima data disponibile è", now.getHourOfDay(), availability.getHourOfDay());
-		
+
 		String resourceName = "Car";
 		int constraint = 4;
 		availability = user.searchAvailabilityConstraint(agenda, start, end, resourceName, constraint);
 		assertEquals("La prima data disponibile è", start.getHourOfDay(), availability.getHourOfDay());
+	}
+
+	@Test
+	public void print() {
+		Agenda agenda = new Agenda();
+		Resource car = new Car(4);
+		agenda.addResource(car);
+		DateTime start = new DateTime(2020, 11, 12, 14, 00);
+		DateTime end = new DateTime(2020, 11, 12, 17, 00);
+		User user = new User("Mario", "Rossi", "mario.rossi@gmail.com", "1234");
+		boolean success = user.addBooking(agenda, start, end, car, "1");
+		assertEquals("La risorsa è prenotata", true, success);
+		user.addBooking(agenda, start, end, car, "1");
+		assertEquals("Stampa prenotazioni utente", "Le prenotazioni di Mario Rossi sono:\n" + 
+				"Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n", agenda.printFutureBookings(user));		
+		
+		start = new DateTime(2018, 11, 12, 14, 00);
+		end = new DateTime(2018, 11, 12, 17, 00);
+		user.addBooking(agenda, start, end, car, "2");
+		assertEquals("Stampa prenotazioni future utente", "Le prenotazioni di Mario Rossi sono:\n" +
+		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n" +
+				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n", agenda.printAllBookings(user));
+	    
+		Admin admin = new Admin("John", "Doe", "john.doe@gmail.com", "1234");
+		assertEquals("Stampa prenotazioni per risorsa", "\nLe prenotazioni per la risorsa Car sono:\n" +
+		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n" +
+				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n", admin.printBookingsResource(agenda));
 	}
 }

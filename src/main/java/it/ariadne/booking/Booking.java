@@ -23,5 +23,21 @@ public class Booking {
 	public String getId() {
 		return id;
 	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	@Override
+	public String toString() {
+		String s = "Prenotazione: " + this.getId() + " " + this.getInterval().toString() +
+				" eseguita da " + this.getUser().getName() + " " + this.getUser().getSurname();
+		return s;
+	}
+	
+	public String toStringWithoutUser() {
+		String s = "Prenotazione: " + this.getId() + " " + this.getInterval().toString();
+		return s;
+	}
 
 }

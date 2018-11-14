@@ -96,4 +96,34 @@ public class Agenda {
 		}
 		return null;
 	}
+	
+	public String printAllBookings(User user) {
+		String s = "Le prenotazioni di " + user.getName() + " " + user.getSurname() + " sono:\n";
+		for (Map.Entry<Resource, List<Booking>> map : this.agenda.entrySet()) {
+			List<Booking> list = map.getValue();
+			for (Booking b: list) {
+				if (b.getUser().equals(user)) {
+					s += b.toStringWithoutUser() + "\n";
+				}
+			}
+		}
+		return s;
+	}
+	
+	public String printFutureBookings(User user) {
+		String s = "Le prenotazioni di " + user.getName() + " " + user.getSurname() + " sono:\n";
+		for (Map.Entry<Resource, List<Booking>> map : this.agenda.entrySet()) {
+			List<Booking> list = map.getValue();
+			for (Booking b: list) {
+				if (b.getUser().equals(user) && b.getInterval().isAfterNow()) {
+					s += b.toStringWithoutUser() + "\n";
+				}
+			}
+		}
+		return s;
+	}
+
+	public Map<Resource, List<Booking>> getAgenda() {
+		return agenda;
+	}
 }
