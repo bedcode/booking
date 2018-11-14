@@ -23,13 +23,15 @@ public class Admin extends AbstractUser {
 				s += b.toString() + "\n";
 			}
 		}
-		
-		
 		return s;
 	}
 	
-	public String printBookingUsers(User u) {
+	public String printBookingsUsers(Agenda a, List<User> users) {
 		String s = "";
+		Map<Resource, List<Booking>> agenda = a.getAgenda();
+		for (User u: users) {
+			s += a.printAllBookings(u);
+		}
 		return s;
 	}
 }

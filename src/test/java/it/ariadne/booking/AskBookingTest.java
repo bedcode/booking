@@ -2,6 +2,9 @@ package it.ariadne.booking;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.Test;
@@ -151,7 +154,9 @@ public class AskBookingTest {
 		agenda.addResource(car);
 		DateTime start = new DateTime(2020, 11, 12, 14, 00);
 		DateTime end = new DateTime(2020, 11, 12, 17, 00);
+		List<User> users = new ArrayList<>();
 		User user = new User("Mario", "Rossi", "mario.rossi@gmail.com", "1234");
+		users.add(user);
 		boolean success = user.addBooking(agenda, start, end, car, "1");
 		assertEquals("La risorsa è prenotata", true, success);
 		user.addBooking(agenda, start, end, car, "1");
@@ -169,5 +174,9 @@ public class AskBookingTest {
 		assertEquals("Stampa prenotazioni per risorsa", "\nLe prenotazioni per la risorsa Car sono:\n" +
 		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n" +
 				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n", admin.printBookingsResource(agenda));
+	   
+		assertEquals("Stampa prenotazioni per utente", "Le prenotazioni di Mario Rossi sono:\n" +
+		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n" +
+				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n", admin.printBookingsUsers(agenda, users));
 	}
 }
