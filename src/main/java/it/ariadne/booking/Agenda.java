@@ -15,9 +15,10 @@ public class Agenda {
 
 	private Map<Resource, List<Booking>> agenda = new HashMap<>();
 
-	public void addResource(Resource r) {
+	public List<Booking> addResource(Resource r) {
 		List<Booking> l = new ArrayList<>();
-		this.agenda.put(r, l);
+		agenda.put(r, l);
+		return l;
 	}
 
 	public boolean getAvailability(DateTime start, DateTime end, Resource r) {
@@ -90,8 +91,7 @@ public class Agenda {
 			if (r.getClass().getSimpleName().equals(resourceName) && r.getConstraint() >= constraint) {
 				dt = this.searchAvailability(r, p);
 				if (dt != null) {
-					return dt;
-				}
+					return dt;				}
 			}
 		}
 		return null;

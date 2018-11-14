@@ -160,23 +160,69 @@ public class AskBookingTest {
 		boolean success = user.addBooking(agenda, start, end, car, "1");
 		assertEquals("La risorsa è prenotata", true, success);
 		user.addBooking(agenda, start, end, car, "1");
-		assertEquals("Stampa prenotazioni utente", "Le prenotazioni di Mario Rossi sono:\n" + 
-				"Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n", agenda.printFutureBookings(user));		
-		
+		assertEquals("Stampa prenotazioni utente",
+				"Le prenotazioni di Mario Rossi sono:\n"
+						+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n",
+				agenda.printFutureBookings(user));
+
 		start = new DateTime(2018, 11, 12, 14, 00);
 		end = new DateTime(2018, 11, 12, 17, 00);
 		user.addBooking(agenda, start, end, car, "2");
-		assertEquals("Stampa prenotazioni future utente", "Le prenotazioni di Mario Rossi sono:\n" +
-		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n" +
-				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n", agenda.printAllBookings(user));
-	    
+		assertEquals("Stampa prenotazioni future utente",
+				"Le prenotazioni di Mario Rossi sono:\n"
+						+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n"
+						+ "Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n",
+				agenda.printAllBookings(user));
+
 		Admin admin = new Admin("John", "Doe", "john.doe@gmail.com", "1234");
-		assertEquals("Stampa prenotazioni per risorsa", "\nLe prenotazioni per la risorsa Car sono:\n" +
-		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n" +
-				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n", admin.printBookingsResource(agenda));
-	   
-		assertEquals("Stampa prenotazioni per utente", "Le prenotazioni di Mario Rossi sono:\n" +
-		        "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n" +
-				"Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n", admin.printBookingsUsers(agenda, users));
+		assertEquals("Stampa prenotazioni per risorsa", "\nLe prenotazioni per la risorsa Car sono:\n"
+				+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n"
+				+ "Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n",
+				admin.printBookingsResource(agenda));
+
+		assertEquals("Stampa prenotazioni per utente",
+				"Le prenotazioni di Mario Rossi sono:\n"
+						+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00\n"
+						+ "Prenotazione: 2 2018-11-12T14:00:00.000+01:00/2018-11-12T17:00:00.000+01:00\n",
+				admin.printBookingsUsers(agenda, users));
+	}
+
+	@Test
+	public void crud() {
+		Agenda agenda = new Agenda();
+		Resource car = new Car(4);
+		Admin admin = new Admin("John", "Doe", "john.doe@gmail.com", "1234");
+		List<Booking> l = admin.addResource(car, agenda);
+		assertEquals("Risorsa aggiunta", true, l.isEmpty());
+
+		l = admin.addResource(car, agenda);
+		assertEquals("Risorsa non aggiunta", null, l);
+
+		DateTime start = new DateTime(2020, 11, 12, 14, 00);
+		DateTime end = new DateTime(2020, 11, 12, 17, 00);
+		List<User> users = new ArrayList<>();
+		User user = new User("Mario", "Rossi", "mario.rossi@gmail.com", "1234");
+		user.addBooking(agenda, start, end, car, "1");
+		User user2 = new User("Maria", "Rossi", "maria.rossi@gmail.com", "1234");
+		user2.addBooking(agenda, start.plusDays(2), end.plusDays(2), car, "2");
+		assertEquals("Lettura risorsa", "Risorsa Car limite: 4" + "\nLe prenotazioni per la risorsa Car sono:\n"
+				+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n"
+				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
+				admin.readResource(car, agenda));
+
+		Resource car2 = new Car(5);
+		l = admin.updateResource(car, car2, agenda);
+		assertEquals("Modifica risorsa", "Risorsa Car limite: 5" + "\nLe prenotazioni per la risorsa Car sono:\n"
+				+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n"
+				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
+				admin.readResource(car2, agenda));
+		
+		l = admin.updateResource(car, car2, agenda);
+		assertEquals("Modifica risorsa", null, l);
+		
+		boolean success = admin.deleteResource(car2, agenda);
+		assertEquals("Elimina risorsa", true, success);
+		success = admin.deleteResource(car, agenda);
+		assertEquals("Elimina risorsa", false, success);
 	}
 }
