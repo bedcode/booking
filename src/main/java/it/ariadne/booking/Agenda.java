@@ -21,6 +21,14 @@ public class Agenda {
 		return l;
 	}
 
+	/**
+	 * It checks availability of a resource in a given period.
+	 * 
+	 * @param start start of the DateTime to check
+	 * @param end end of the DateTime to check
+	 * @param r Resource to check
+	 * @return true is Resource is available, otherwise false
+	 */
 	public boolean getAvailability(DateTime start, DateTime end, Resource r) {
 		Interval interval = new Interval(start, end);
 		List<Booking> bookings = this.agenda.get(r);
@@ -55,6 +63,13 @@ public class Agenda {
 		return false;
 	}
 
+	/**
+	 * It searches the first date when a Resource is available.
+	 * 
+	 * @param r Resource to check
+	 * @param period Period to check
+	 * @return DateTime when Resource is available, null if no bookings are available
+	 */
 	public DateTime searchAvailability(Resource r, Period period) {
 		boolean condition = false;
 		DateTime start = new DateTime();
@@ -70,6 +85,15 @@ public class Agenda {
 		return null;
 	}
 
+	/**
+	 * It searches the first date when a Resource is available in a given period.
+	 * 
+	 * @param start DateTime start of the interval in which checking the availability of the Resource
+	 * @param end DateTime end of the interval in which checking the availability of the Resource
+	 * @param r Resource to check
+	 * @param period Period of the desired booking
+	 * @return DateTime when Resource is available, null if no bookings are available
+	 */
 	public DateTime searchAvailability(DateTime start, DateTime end, Resource r, Period period) {
 		boolean condition = false;
 		while (condition == false && start.plus(period).isBefore(end)) {
@@ -83,6 +107,15 @@ public class Agenda {
 		return null;
 	}
 
+	/**
+	 * It searches the first date when a Resource with a particular constraint is available.
+	 * 
+	 * @param start of the DateTime to check
+	 * @param end end of the DateTime to check
+	 * @param resourceName name of Resource type
+	 * @param constraint constraint of the Resource
+	 * @return DateTime when Resource is available, null if no bookings are available
+	 */
 	public DateTime searchAvailabilityConstraint(DateTime start, DateTime end, String resourceName, int constraint) {
 		Period p = new Period(start, end);
 		DateTime dt;
