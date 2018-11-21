@@ -252,12 +252,12 @@
                             Cerca Disponibilit&agrave;
                         </div>
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <form role="form">
+                            <form role="form">
+                                <div class="row">
+                                    <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Tipo Risorsa</label>
-                                            <select class="form-control">
+                                            <select class="form-control" required>
                                                 <option value="" selected disable hidden>Scegli un tipo</option>
                                                 <option value="Auto">Auto</option>
                                                 <option value="Aula">Aula</option>
@@ -265,40 +265,53 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Nome Risorsa</label>
-                                            <input class="form-control" placeholder="Inserire il nome della risorsa">
-                                        </div>
-                                        <div class="form-group">
                                             <label>Data inizio prenotazione</label>
-                                            <input class="form-control" type="date">
+                                            <input type="date" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Data fine prenotazione</label>
-                                            <input class="form-control" type="date">
+                                            <input type="date" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Controlla da</label>
-                                            <input class="form-control" type="date">
+                                            <input class="form-control" type="datetime-local">
+                                        </div>
+                                        <div class="form-comtrol">
+                                            <label>Limite Risorsa</label>
+                                            <input class="form-control" placeholder="Inserire il limite della risorsa">
+                                        </div>
+                                    </div>                        
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Nome Risorsa</label>
+                                            <input class="form-control" placeholder="Inserire il nome della risorsa" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ora inizio prenotazione</label>
+                                            <input type="time" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Ora fine prenotazione</label>
+                                            <input type="time" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Controlla fino a</label>
-                                            <input class="form-control" type="date">
+                                            <input class="form-control" type="datetime-local">
                                         </div>
-                                        <div class="form-group">
-                                            <label>Limite Risorsa</label>
-                                            <input class="form-control" type="number" min="1" placeholder="Inserire il limite della risorsa">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-lg">Salva</button>
-                                        <button type="reset" class="btn btn-outline btn-primary btn-lg">Annulla</button>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-primary btn-lg">Cerca</button>
+                                        <button type="reset" class="btn btn-outline btn-primary btn-lg">Annulla</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- /#page-wrapper -->
+    <!-- /#page-wrapper -->
     </div>
     <!-- /#wrapper -->
 
