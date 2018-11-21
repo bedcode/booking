@@ -23,11 +23,13 @@ public class AskBookingTest {
 		agenda.addResource(car);
 		DateTime start1 = new DateTime(2018, 11, 9, 14, 30);
 		DateTime end1 = new DateTime(2018, 11, 9, 16, 30);
+		// book a resource
 		boolean success = agenda.addBooking(start1, end1, car, "1", null);
 		assertEquals("La risorsa è prenotata", true, success);
 
 		DateTime start2 = new DateTime(2018, 11, 9, 15, 30);
 		DateTime end2 = new DateTime(2018, 11, 9, 17, 30);
+		// resource busy in this interval
 		success = agenda.addBooking(start2, end2, car, "2", null);
 		assertEquals("La risorsa è prenotata", false, success);
 
@@ -47,8 +49,10 @@ public class AskBookingTest {
 		DateTime start = new DateTime(2018, 11, 9, 14, 30);
 		DateTime end = new DateTime(2018, 11, 9, 16, 30);
 		agenda.addBooking(start, end, car, "1", null);
+		// delete a resource
 		boolean success = agenda.deleteBooking(car, "1");
 		assertEquals("La prenotazione è stata cancellata", true, success);
+		// resource already deleted
 		success = agenda.deleteBooking(car, "1");
 		assertEquals("La prenotazione è stata cancellata", false, success);
 	}

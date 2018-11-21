@@ -13,6 +13,12 @@ public class Admin extends AbstractUser {
 		super(name, surname, email, password);
 	}
 
+	/**
+	 * It prints all the bookings of a resource.
+	 * 
+	 * @param a an instance of Agenda
+	 * @return a string
+	 */
 	public String printBookingsResource(Agenda a) {
 		String s = "";
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
@@ -26,6 +32,13 @@ public class Admin extends AbstractUser {
 		return s;
 	}
 
+	/**
+	 * It prints all the bookings of all the users.
+	 * 
+	 * @param a an instance of Agenda
+	 * @param users list of Users
+	 * @return a string
+	 */
 	public String printBookingsUsers(Agenda a, List<User> users) {
 		String s = "";
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
@@ -35,6 +48,13 @@ public class Admin extends AbstractUser {
 		return s;
 	}
 
+	/**
+	 * It adds a resource.
+	 * 
+	 * @param r an instance of Resource
+	 * @param a an instance of Agenda
+	 * @return list of Booking
+	 */
 	public List<Booking> addResource(Resource r, Agenda a) {
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
 		if (agenda.containsKey(r)) {
@@ -44,6 +64,13 @@ public class Admin extends AbstractUser {
 		}
 	}
 
+	/**
+	 * It returns a string with all the bookings of a resource.
+	 * 
+	 * @param resource an instance of Resource
+	 * @param a an instance of Agenda
+	 * @return a string
+	 */
 	public String readResource(Resource resource, Agenda a) {
 		String s = "";
 		s += "Risorsa " + resource.getClass().getSimpleName() + " limite: " + resource.getConstraint();
@@ -61,6 +88,14 @@ public class Admin extends AbstractUser {
 		return s;
 	}
 	
+	/**
+	 * It updates a resource
+	 * 
+	 * @param rOld
+	 * @param rNew
+	 * @param a
+	 * @return
+	 */
 	public List<Booking> updateResource(Resource rOld, Resource rNew, Agenda a) {
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
 		if (agenda.containsKey(rOld)) {
@@ -72,6 +107,13 @@ public class Admin extends AbstractUser {
 		}
 	}
 	
+	/**
+	 * It deletes a resource.
+	 * 
+	 * @param r an instance of Resource
+	 * @param a an instance of Agenda
+	 * @return true if the resource is deleted, otherwise false
+	 */
 	public boolean deleteResource(Resource r, Agenda a) {
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
 		if (agenda.containsKey(r)) {

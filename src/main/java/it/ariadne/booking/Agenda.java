@@ -15,6 +15,12 @@ public class Agenda {
 
 	private Map<Resource, List<Booking>> agenda = new HashMap<>();
 
+	/**
+	 * It adds a Resource.
+	 * 
+	 * @param r an instance of Resource
+	 * @return list of Booking
+	 */
 	public List<Booking> addResource(Resource r) {
 		List<Booking> l = new ArrayList<>();
 		agenda.put(r, l);
@@ -40,6 +46,16 @@ public class Agenda {
 		return true;
 	}
 
+	/**
+	 * It adds a booking.
+	 * 
+	 * @param DateTime start of the interval in which checking the availability of the Resource
+	 * @param end DateTime end of the interval in which checking the availability of the Resource
+	 * @param r Resource to check
+	 * @param id id of the booking
+	 * @param user user that made the booking
+	 * @return true if 
+	 */
 	public boolean addBooking(DateTime start, DateTime end, Resource r, String id, User user) {
 		if (this.getAvailability(start, end, r)) {
 			Interval interval = new Interval(start, end);
@@ -52,6 +68,13 @@ public class Agenda {
 		}
 	}
 
+	/**
+	 * It deletes a Resource.
+	 * 
+	 * @param r an instance of Resource
+	 * @param id id of the Resource
+	 * @return true if the resource is deleted, otherwise false
+	 */
 	public boolean deleteBooking(Resource r, String id) {
 		List<Booking> bookings = this.agenda.get(r);
 		for (Booking b : bookings) {
@@ -130,6 +153,12 @@ public class Agenda {
 		return null;
 	}
 	
+	/**
+	 * It prints all the bookings of a user.
+	 * 
+	 * @param user an instance of User
+	 * @return a string
+	 */
 	public String printAllBookings(User user) {
 		String s = "Le prenotazioni di " + user.getName() + " " + user.getSurname() + " sono:\n";
 		for (Map.Entry<Resource, List<Booking>> map : this.agenda.entrySet()) {
@@ -143,6 +172,12 @@ public class Agenda {
 		return s;
 	}
 	
+	/**
+	 * It prints all the future bookings of a User.
+	 * 
+	 * @param user an instance of User
+	 * @return a string
+	 */
 	public String printFutureBookings(User user) {
 		String s = "Le prenotazioni di " + user.getName() + " " + user.getSurname() + " sono:\n";
 		for (Map.Entry<Resource, List<Booking>> map : this.agenda.entrySet()) {
