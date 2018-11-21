@@ -10,6 +10,8 @@ import org.joda.time.Period;
 import org.junit.Test;
 
 import it.ariadne.booking.resource.Car;
+import it.ariadne.booking.resource.Classroom;
+import it.ariadne.booking.resource.Computer;
 import it.ariadne.booking.users.AbstractUser;
 import it.ariadne.booking.users.Admin;
 import it.ariadne.booking.users.User;
@@ -232,5 +234,16 @@ public class AskBookingTest {
 		assertEquals("Elimina risorsa", true, success);
 		success = admin.deleteResource(car2, agenda);
 		assertEquals("Elimina risorsa", false, success);
+	}
+	
+	@Test
+	public void testResource() {
+		Resource classroom = new Classroom(220);
+		classroom.getConstraint();
+		classroom.setConstraint(300);
+		
+		Resource computer = new Computer(8);
+		computer.getConstraint();
+		computer.setConstraint(16);
 	}
 }
