@@ -91,19 +91,18 @@ public class Admin extends AbstractUser {
 	/**
 	 * It updates a resource
 	 * 
-	 * @param rOld
-	 * @param rNew
-	 * @param a
-	 * @return
+	 * @param r an instance of Resource
+	 * @param constraint new constraint
+	 * @param a an instance of Agenda
+	 * @return true if the resource is updated, otherwise false
 	 */
-	public List<Booking> updateResource(Resource rOld, Resource rNew, Agenda a) {
+	public boolean updateResource(Resource r, int constraint, Agenda a) {
 		Map<Resource, List<Booking>> agenda = a.getAgenda();
-		if (agenda.containsKey(rOld)) {
-			List<Booking> l = agenda.remove(rOld);
-			agenda.put(rNew, l);
-			return l;
+		if (agenda.containsKey(r)) {
+			r.setConstraint(constraint);
+			return true;
 		} else {
-			return null;
+			return false;
 		}
 	}
 	

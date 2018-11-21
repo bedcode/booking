@@ -14,4 +14,9 @@ public class Car implements Resource {
 	public int getConstraint() {
 		return this.seats;
 	}
+
+	@Override
+	public void setConstraint(int constraint) {
+		this.seats = constraint;		
+	}
 }

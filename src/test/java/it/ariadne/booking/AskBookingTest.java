@@ -214,19 +214,23 @@ public class AskBookingTest {
 				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
 				admin.readResource(car, agenda));
 
-		Resource car2 = new Car(5);
-		l = admin.updateResource(car, car2, agenda);
+		int constraint = 5;
+		boolean success = admin.updateResource(car, constraint, agenda);
+		assertEquals("Risorsa modificata", true, success);
 		assertEquals("Modifica risorsa", "Risorsa Car limite: 5" + "\nLe prenotazioni per la risorsa Car sono:\n"
 				+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n"
 				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
-				admin.readResource(car2, agenda));
+				admin.readResource(car, agenda));
 		
-		l = admin.updateResource(car, car2, agenda);
-		assertEquals("Modifica risorsa", null, l);
+		Resource car2 = null;
+		success = admin.updateResource(car2, constraint, agenda);
+		assertEquals("Modifica risorsa", false, success);
 		
-		boolean success = admin.deleteResource(car2, agenda);
+		car2 = new Car(5);
+		admin.addResource(car2, agenda);
+		success = admin.deleteResource(car2, agenda);
 		assertEquals("Elimina risorsa", true, success);
-		success = admin.deleteResource(car, agenda);
+		success = admin.deleteResource(car2, agenda);
 		assertEquals("Elimina risorsa", false, success);
 	}
 }
