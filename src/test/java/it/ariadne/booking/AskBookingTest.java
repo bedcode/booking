@@ -10,6 +10,8 @@ import org.joda.time.Period;
 import org.junit.Test;
 
 import it.ariadne.booking.resource.Car;
+import it.ariadne.booking.resource.Classroom;
+import it.ariadne.booking.resource.Computer;
 import it.ariadne.booking.users.AbstractUser;
 import it.ariadne.booking.users.Admin;
 import it.ariadne.booking.users.User;
@@ -23,11 +25,13 @@ public class AskBookingTest {
 		agenda.addResource(car);
 		DateTime start1 = new DateTime(2018, 11, 9, 14, 30);
 		DateTime end1 = new DateTime(2018, 11, 9, 16, 30);
+		// book a resource
 		boolean success = agenda.addBooking(start1, end1, car, "1", null);
 		assertEquals("La risorsa è prenotata", true, success);
 
 		DateTime start2 = new DateTime(2018, 11, 9, 15, 30);
 		DateTime end2 = new DateTime(2018, 11, 9, 17, 30);
+		// resource busy in this interval
 		success = agenda.addBooking(start2, end2, car, "2", null);
 		assertEquals("La risorsa è prenotata", false, success);
 
@@ -47,8 +51,10 @@ public class AskBookingTest {
 		DateTime start = new DateTime(2018, 11, 9, 14, 30);
 		DateTime end = new DateTime(2018, 11, 9, 16, 30);
 		agenda.addBooking(start, end, car, "1", null);
+		// delete a resource
 		boolean success = agenda.deleteBooking(car, "1");
 		assertEquals("La prenotazione è stata cancellata", true, success);
+		// resource already deleted
 		success = agenda.deleteBooking(car, "1");
 		assertEquals("La prenotazione è stata cancellata", false, success);
 	}
@@ -210,19 +216,34 @@ public class AskBookingTest {
 				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
 				admin.readResource(car, agenda));
 
-		Resource car2 = new Car(5);
-		l = admin.updateResource(car, car2, agenda);
+		int constraint = 5;
+		boolean success = admin.updateResource(car, constraint, agenda);
+		assertEquals("Risorsa modificata", true, success);
 		assertEquals("Modifica risorsa", "Risorsa Car limite: 5" + "\nLe prenotazioni per la risorsa Car sono:\n"
 				+ "Prenotazione: 1 2020-11-12T14:00:00.000+01:00/2020-11-12T17:00:00.000+01:00 eseguita da Mario Rossi\n"
 				+ "Prenotazione: 2 2020-11-14T14:00:00.000+01:00/2020-11-14T17:00:00.000+01:00 eseguita da Maria Rossi\n",
-				admin.readResource(car2, agenda));
+				admin.readResource(car, agenda));
 		
-		l = admin.updateResource(car, car2, agenda);
-		assertEquals("Modifica risorsa", null, l);
+		Resource car2 = null;
+		success = admin.updateResource(car2, constraint, agenda);
+		assertEquals("Modifica risorsa", false, success);
 		
-		boolean success = admin.deleteResource(car2, agenda);
+		car2 = new Car(5);
+		admin.addResource(car2, agenda);
+		success = admin.deleteResource(car2, agenda);
 		assertEquals("Elimina risorsa", true, success);
-		success = admin.deleteResource(car, agenda);
+		success = admin.deleteResource(car2, agenda);
 		assertEquals("Elimina risorsa", false, success);
+	}
+	
+	@Test
+	public void testResource() {
+		Resource classroom = new Classroom(220);
+		classroom.getConstraint();
+		classroom.setConstraint(300);
+		
+		Resource computer = new Computer(8);
+		computer.getConstraint();
+		computer.setConstraint(16);
 	}
 }
